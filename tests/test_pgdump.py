@@ -1,5 +1,4 @@
 import subprocess
-import pytest
 
 from pgbackup import pgdump
 
@@ -22,3 +21,16 @@ def test_dump_calls_pg_dump(mocker):
 #     mocker.patch('subprocess.Popen', side_affect=OSError('no such file'))
 #     with pytest.raises(SystemExit):
 #         pgdump.dump(url)
+
+def test_dump_file_name_without_timestamp():
+    """
+    pgdump.dump_file_Name returns on the name of database
+    """
+    assert pgdump.dump_file_name(url) == "db_one.sql"
+
+def test_dump_file_name_wit_timestamp():
+    """
+    pgdump.dump_file_Name returns on the name of database with timestamp
+    """
+    timestamp = "2017-12-03T13:14:10"
+    assert pgdump.dump_file_name(url, timestamp) == f"db_one-{timestamp}.sql"
